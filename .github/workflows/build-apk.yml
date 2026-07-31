@@ -20,7 +20,7 @@ jobs:
     - name: ติดตั้ง Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.10.0'
+        flutter-version: '3.19.6'
 
     - name: โหลดแพ็กเกจต่างๆ ของแอป
       run: flutter pub get
