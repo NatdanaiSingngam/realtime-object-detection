@@ -1,0 +1,37 @@
+name: Build Flutter APK
+
+# คำสั่งนี้ทำให้เราสามารถกดปุ่ม Build เองได้ตลอดเวลา
+on: 
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: ดึงโค้ดจาก Repository
+      uses: actions/checkout@v3
+
+    - name: ติดตั้ง Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: ติดตั้ง Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+
+    - name: โหลดแพ็กเกจต่างๆ ของแอป
+      run: flutter pub get
+
+    - name: สร้างไฟล์ APK
+      run: flutter build apk --release
+
+    - name: นำไฟล์ APK ออกมาให้ดาวน์โหลด
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+        
