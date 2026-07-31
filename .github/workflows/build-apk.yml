@@ -25,7 +25,7 @@ jobs:
     - name: โหลดแพ็กเกจต่างๆ ของแอป
       run: flutter pub get
 
-    - name: แก้ไขบั๊กโค้ดเก่าของ Android
+    - name: แก้ไขบั๊กโค้ดเก่าและเพิ่ม RAM
       run: |
         # 1. แก้บั๊ก tflite_v2 namespace
         FILE=$(ls /home/runner/.pub-cache/hosted/pub.dev/tflite_v2-*/android/build.gradle 2>/dev/null | head -n 1)
@@ -33,9 +33,12 @@ jobs:
           echo "android { namespace 'sq.flutter.tflite' }" >> "$FILE"
         fi
         
-        # 2. อัปเดต Android SDK เป็น 36 เพื่อให้รองรับแพ็กเกจ Camera
+        # 2. อัปเดต Android SDK เป็น 36 เพื่อรองรับแพ็กเกจ Camera
         sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' android/app/build.gradle
         sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' android/app/build.gradle
+        
+        # 3. ขยายขนาด RAM สำหรับ Build ป้องกัน Java heap space
+        echo "org.gradle.jvmargs=-Xmx4G" >> android/gradle.properties
 
     - name: สร้างไฟล์ APK (โหมด Debug เพื่อข้ามบั๊ก R8)
       run: flutter build apk --debug
