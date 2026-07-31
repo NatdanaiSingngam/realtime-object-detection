@@ -20,10 +20,17 @@ jobs:
     - name: ติดตั้ง Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.19.6'
+        flutter-version: '3.22.0'
 
     - name: โหลดแพ็กเกจต่างๆ ของแอป
       run: flutter pub get
+
+    - name: แก้ไขบั๊กแพ็กเกจ tflite_v2 อัตโนมัติ
+      run: |
+        FILE=$(ls /home/runner/.pub-cache/hosted/pub.dev/tflite_v2-*/android/build.gradle 2>/dev/null | head -n 1)
+        if [ -n "$FILE" ]; then
+          echo "android { namespace 'sq.flutter.tflite' }" >> "$FILE"
+        fi
 
     - name: สร้างไฟล์ APK
       run: flutter build apk --release
