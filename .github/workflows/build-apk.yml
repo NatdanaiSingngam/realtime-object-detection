@@ -33,9 +33,9 @@ jobs:
           echo "android { namespace 'sq.flutter.tflite' }" >> "$FILE"
         fi
         
-        # 2. อัปเดต Android SDK เป็น 34 เพื่อแก้บั๊ก lStar
-        sed -i 's/compileSdkVersion.*/compileSdkVersion 34/g' android/app/build.gradle
-        sed -i 's/targetSdkVersion.*/targetSdkVersion 34/g' android/app/build.gradle
+        # 2. อัปเดต Android SDK เป็น 36 เพื่อให้รองรับแพ็กเกจ Camera
+        sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' android/app/build.gradle
+        sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' android/app/build.gradle
 
     - name: สร้างไฟล์ APK (โหมด Debug เพื่อข้ามบั๊ก R8)
       run: flutter build apk --debug
